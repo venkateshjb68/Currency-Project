@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="curren.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+    <h2><i class="fa-solid fa-c fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-u fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-r fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-r fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-e fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-n fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-c fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-y fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-c fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-o fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-n fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-v fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-e fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-r fa-beat-fade" style="color: #ff0000;"></i>
+        <i class="fa-solid fa-t fa-beat-fade" style="color: #ff0000;"></i></h2><br>
+    <select name="" id="" value="" class="currency "></select>
+    <input type="number" value="" id="input">
+    <select name="" id="" value="" class="currency"></select><br>
+    <h2>Result</h2>
+    <input type="number" value="" id="result"><br>
+    <button id="btn">Convert</button>
+    </div>
+</body>
+<script>
+    let select =document.querySelectorAll('.currency')
+    let btn=document.getElementById('btn');
+    let input=document.getElementById("input")
+    fetch(`https://api.frankfurter.app/currencies`)
+        .then(res=>(res.json()))
+        .then(res=>displayDropDown(res))
+
+        function displayDropDown(res){
+            let curr= Object.entries(res)
+            for(let i=0;i<curr.length;i++)
+        {
+            let opt=`<option value="${curr[i][0]}">${curr[i][1]}</option>`
+            select[0].innerHTML +=opt
+            select[1].innerHTML += opt
+        }
+        }    
+        btn.addEventListener('click',()=>{
+            let curr1=select[0].value;
+            let curr2=select[1].value;
+            let inputval=input.value;
+            if(curr1===curr2)
+            alert("choose different currencies")
+        else
+        convert(curr1,curr2,inputval)
+        });
+    
+        function convert(curr1, curr2, inputval) {
+    
+    fetch(`https://api.frankfurter.app/latest?amount=${inputval}&from=${curr1}&to=${curr2}`)
+        .then(res => res.json())
+        .then((data) => {
+            document.getElementById('result').value = Object.values(data.rates)[0];
+        })
+        .catch(error => console.error('Error:', error));
+}
+ 
+        
+</script>
+</html>
